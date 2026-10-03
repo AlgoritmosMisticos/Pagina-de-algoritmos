@@ -59,3 +59,17 @@ Comparación activa: Color resaltado para las barras que se están evaluando en 
 Intercambio: Coloración diferenciada para señalar la permuta de posiciones.
 Elemento ordenado: Indicador visual que confirma que el elemento ya está en su posición final.
 
+**Organizacion del equipo**
+       **Andrea Torres**: Fue la encargada del desarrollo visual y la creacion de la pagina web.
+       **Estefania Mendoza**: Fue la encargada de la documentacion del proyecto.
+       **Octavio López**: Fue el encargado de la parte funcional de la pagina.
+**Uso de IA**
+Se utilizó asistencia de Inteligencia Artificial como soporte técnico especializado en la optimización y refactorización del código JavaScript. Específicamente en:
+       **Manejo No Bloqueante con Promesas (async/await)**: Estructuración de pausas temporales para evitar bucles de espera        activos (busy waiting) y prevenir que la pestaña del navegador se congelara durante ejecuciones intensivas.
+       **Actualización Eficiente del DOM:** Optimización de la manipulación directa de nodos HTML modificando únicamente los        atributos necesarios (height, background-color) de las barras afectadas, reduciendo los tiempos de reflow y repaint          del navegador.
+       **Modularización Lógica:** Separación adecuada entre el estado global de la aplicación y los bucles internos de los          algoritmos.
+
+**Aprendizajes y conclusiones**
+       **Comprensión Práctica de Algoritmos:** La visualización paso a paso permitió contrastar empíricamente la diferencia         real de rendimiento entre algoritmos de complejidad cuadrática $O(n^2)$ y logarítmica $O(n \log n)$.
+       **Gestión de Asincronía en JS:** Se reforzó el uso del Event Loop de JavaScript mediante async/await y Promesas para         lograr simulación en tiempo real fluida sin bloquear el hilo de ejecución principal de la interfaz de usuario.
+       **Maquetación y Experiencia de Usuario:** La combinación de HTML5 semántico con Tailwind CSS facilitó la construcción        de una interfaz atractiva, funcional y accesible para fines educativos.
