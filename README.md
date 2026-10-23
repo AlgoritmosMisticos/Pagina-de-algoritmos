@@ -1,4 +1,5 @@
 Pagina web actualizada https://algoritmosmisticos.github.io/Pagina-de-algoritmos/
+
 Pagina web con GitHub pages https://algoritmosmisticos.github.io/Pagina-de-algoritmos/
 
 # Visualizador Interactivo de Algoritmos de Ordenamiento
