@@ -152,6 +152,7 @@
         .tracking-wide, .tracking-wider, .tracking-widest { letter-spacing: 0 !important; }
         input::placeholder { font-size: 8px; }
     </style>
+<style>aside>div:first-child{overflow-y:auto;min-height:0}.hf-t td,.hf-t th{padding:4px 8px;border-bottom:1px solid #dcd6f7;text-align:left}</style>
 </head>
 
 <body class="bg-slate-100 font-sans text-slate-800 antialiased h-full overflow-hidden select-none">
@@ -235,6 +236,31 @@
                     <button onclick="switchTab('complejidad')" id="nav-complejidad" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl transition text-left text-slate-200 hover:bg-purple-700/60">
                         <i class="fa-solid fa-brain w-5 text-center text-purple-300"></i>
                         <span class="sketch-title text-lg">Complejidad</span>
+                    </button>
+
+                    <button onclick="switchTab('huffman')" id="nav-huffman" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl transition text-left text-slate-200 hover:bg-purple-700/60">
+                        <i class="fa-solid fa-sitemap w-5 text-center text-purple-300"></i>
+                        <span class="sketch-title text-lg">Huffman</span>
+                    </button>
+
+                    <button onclick="switchTab('gutenberg')" id="nav-gutenberg" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl transition text-left text-slate-200 hover:bg-purple-700/60">
+                        <i class="fa-solid fa-book-open w-5 text-center text-purple-300"></i>
+                        <span class="sketch-title text-lg">Libros</span>
+                    </button>
+
+                    <button onclick="switchTab('grafos')" id="nav-grafos" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl transition text-left text-slate-200 hover:bg-purple-700/60">
+                        <i class="fa-solid fa-share-nodes w-5 text-center text-purple-300"></i>
+                        <span class="sketch-title text-lg">Grafos</span>
+                    </button>
+
+                    <button onclick="switchTab('voraces')" id="nav-voraces" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl transition text-left text-slate-200 hover:bg-purple-700/60">
+                        <i class="fa-solid fa-coins w-5 text-center text-purple-300"></i>
+                        <span class="sketch-title text-lg">Voraces</span>
+                    </button>
+
+                    <button onclick="switchTab('fibonacci')" id="nav-fibonacci" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl transition text-left text-slate-200 hover:bg-purple-700/60">
+                        <i class="fa-solid fa-seedling w-5 text-center text-purple-300"></i>
+                        <span class="sketch-title text-lg">Fibonacci</span>
                     </button>
                 </nav>
             </div>
@@ -635,6 +661,90 @@
                 </div>
             </section>
 
+
+            <section id="tab-huffman" class="tab-content hidden flex-1 p-6 overflow-y-auto">
+                <div class="max-w-6xl mx-auto space-y-6">
+                    <div class="bg-gradient-to-r from-purple-800 to-indigo-700 rounded-2xl p-6 text-white shadow-xl"><h2 class="text-2xl sketch-title">Árbol de Huffman</h2></div>
+<div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+ <p class="text-xs text-slate-600 leading-relaxed">Huffman asigna códigos más cortos a los símbolos más frecuentes. Se unen siempre los dos nodos de menor frecuencia (técnica voraz) hasta formar un árbol; izquierda = 0, derecha = 1.</p>
+ <div class="flex flex-wrap gap-3 items-center">
+  <label class="text-xs font-bold">¿Cuántos símbolos?</label>
+  <input id="hf-n" type="number" min="2" max="26" value="6" class="p-2 border border-slate-300 rounded-lg text-xs font-bold text-center w-20">
+  <button onclick="hfRandom()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-xs"><i class="fa-solid fa-dice mr-2"></i>Generar aleatorio</button>
+  <input id="hf-text" placeholder="…o escribe tu propio texto" class="p-2 border border-slate-300 rounded-lg text-xs font-bold text-center flex-1 min-w-[200px]">
+  <button onclick="hfText()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-xs">Usar texto</button>
+ </div>
+</div>
+<div id="hf-out" class="space-y-4"></div>
+                </div>
+            </section>
+
+            <section id="tab-gutenberg" class="tab-content hidden flex-1 p-6 overflow-y-auto">
+                <div class="max-w-6xl mx-auto space-y-6">
+                    <div class="bg-gradient-to-r from-purple-800 to-indigo-700 rounded-2xl p-6 text-white shadow-xl"><h2 class="text-2xl sketch-title">Libros Project Gutenberg + Compresión</h2></div>
+<div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+ <p class="text-xs text-slate-600 leading-relaxed">Busca un libro en Project Gutenberg, se descarga su .txt y se comprime con Huffman al formato propio <b>.algomistico</b>.</p>
+ <div class="flex flex-wrap gap-3 items-center">
+  <input id="gb-q" placeholder="Título o autor (ej. Don Quijote)" class="p-2 border border-slate-300 rounded-lg text-xs font-bold text-center flex-1 min-w-[220px]" onkeydown="if(event.key==='Enter')gbSearch()">
+  <button onclick="gbSearch()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-xs"><i class="fa-solid fa-magnifying-glass mr-2"></i>Buscar</button>
+  <label class="text-xs font-bold flex items-center gap-2"><input id="gb-viz" type="checkbox" checked class="accent-purple-600">Visualizar árbol</label>
+ </div>
+ <div class="flex flex-wrap gap-3 items-center"><input id="gb-proxy" placeholder="Proxy propio (opcional): https://mi-worker.workers.dev/?url=" class="p-2 border border-slate-300 rounded-lg text-xs flex-1 min-w-[260px]"><a href="https://www.gutenberg.org/ebooks/" target="_blank" rel="noopener" class="text-xs font-bold text-purple-700 underline">Abrir Project Gutenberg</a></div>
+ <div id="gb-res" class="grid grid-cols-1 md:grid-cols-2 gap-2"></div>
+</div>
+<div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+ <h3 class="text-base sketch-title">Descomprimir .algomistico</h3>
+ <div class="flex flex-wrap gap-3 items-center"><input id="gb-file" type="file" accept=".algomistico" class="text-xs"><button onclick="gbUnpack()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-xs">Descomprimir</button></div>
+ <p class="text-xs text-slate-500">También puedes subir un .txt local: <input id="gb-txt" type="file" accept=".txt" onchange="gbLocal()" class="text-xs"></p>
+</div>
+<div id="gb-out" class="space-y-4"></div>
+                </div>
+            </section>
+
+            <section id="tab-grafos" class="tab-content hidden flex-1 p-6 overflow-y-auto">
+                <div class="max-w-6xl mx-auto space-y-6">
+                    <div class="bg-gradient-to-r from-purple-800 to-indigo-700 rounded-2xl p-6 text-white shadow-xl"><h2 class="text-2xl sketch-title">Grafos</h2></div>
+<div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+ <p class="text-xs text-slate-600 leading-relaxed">Un grafo G=(V,E) son nodos unidos por aristas. Aquí: no dirigido y ponderado. BFS recorre por niveles (cola), DFS en profundidad (pila), Dijkstra halla caminos mínimos y Kruskal el árbol de expansión mínima (voraz).</p>
+ <div class="flex flex-wrap gap-3 items-center">
+  <label class="text-xs font-bold">Nodos</label><input id="g-n" type="number" min="4" max="10" value="7" class="p-2 border border-slate-300 rounded-lg text-xs font-bold text-center w-16">
+  <button onclick="gNew()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-xs"><i class="fa-solid fa-shuffle mr-2"></i>Grafo aleatorio</button>
+  <select id="g-alg" class="p-2 border border-slate-300 rounded-lg text-xs font-bold text-center"><option value="bfs">BFS</option><option value="dfs">DFS</option><option value="dij">Dijkstra</option><option value="kru">Kruskal</option></select>
+  <label class="text-xs font-bold">Inicio</label><input id="g-s" type="number" min="0" value="0" class="p-2 border border-slate-300 rounded-lg text-xs font-bold text-center w-16">
+  <button onclick="gRun()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-xs"><i class="fa-solid fa-play mr-2"></i>Ejecutar</button>
+ </div>
+ <div id="g-msg" class="text-xs font-bold text-purple-700 min-h-[1.5em]"></div>
+ <div class="overflow-x-auto"><svg id="g-svg" viewBox="0 0 640 380" class="w-full max-w-3xl mx-auto bg-slate-50 rounded-xl border border-slate-200"></svg></div>
+ <div id="g-mat" class="overflow-x-auto text-xs"></div>
+</div>
+                </div>
+            </section>
+
+            <section id="tab-voraces" class="tab-content hidden flex-1 p-6 overflow-y-auto">
+                <div class="max-w-6xl mx-auto space-y-6">
+                    <div class="bg-gradient-to-r from-purple-800 to-indigo-700 rounded-2xl p-6 text-white shadow-xl"><h2 class="text-2xl sketch-title">Técnicas Voraces (Greedy)</h2></div>
+<div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+ <p class="text-xs text-slate-600 leading-relaxed">Una técnica voraz toma en cada paso la mejor opción local esperando llegar al óptimo global. Ejemplos ya vistos: Huffman, Kruskal y Dijkstra. Aquí tres problemas clásicos.</p>
+</div>
+<div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4"><h3 class="text-base sketch-title">1. Cambio de monedas</h3>
+ <div class="flex flex-wrap gap-3 items-center"><input id="v-amt" type="number" value="289" class="p-2 border border-slate-300 rounded-lg text-xs font-bold text-center w-24"><input id="v-den" value="500,200,100,50,20,10,5,2,1" class="p-2 border border-slate-300 rounded-lg text-xs font-bold text-center flex-1 min-w-[200px]"><button onclick="vCoin()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-xs">Calcular</button></div>
+ <div id="v-coin" class="text-xs space-y-1"></div></div>
+<div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4"><h3 class="text-base sketch-title">2. Mochila fraccionaria</h3>
+ <button onclick="vKnap()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-xs">Generar y resolver</button><div id="v-knap" class="text-xs space-y-1"></div></div>
+<div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4"><h3 class="text-base sketch-title">3. Selección de actividades</h3>
+ <button onclick="vAct()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-xs">Generar y resolver</button><div id="v-act" class="text-xs space-y-1"></div></div>
+                </div>
+            </section>
+
+            <section id="tab-fibonacci" class="tab-content hidden flex-1 p-6 overflow-y-auto">
+                <div class="max-w-6xl mx-auto space-y-6">
+                    <div class="bg-gradient-to-r from-purple-800 to-indigo-700 rounded-2xl p-6 text-white shadow-xl"><h2 class="text-2xl sketch-title">Sucesión de Fibonacci</h2></div>
+<div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+ <p class="text-xs text-slate-600 leading-relaxed">F(0)=0, F(1)=1, F(n)=F(n-1)+F(n-2). Se compara la recursión ingenua O(φⁿ), memoización O(n), iterativo O(n), duplicación rápida O(log n) y la fórmula de Binet O(1) (con error de punto flotante).</p>
+ <div class="flex flex-wrap gap-3 items-center"><label class="text-xs font-bold">n</label><input id="f-n" type="number" min="0" max="5000" value="30" class="p-2 border border-slate-300 rounded-lg text-xs font-bold text-center w-24"><button onclick="fRun()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-xs">Comparar métodos</button></div>
+ <div id="f-out" class="overflow-x-auto text-xs"></div></div>
+                </div>
+            </section>
         </main>
     </div>
 
@@ -846,7 +956,8 @@
             const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Usuarios Registrados</title><link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>body{font-family:'Press Start 2P',monospace;font-size:11px;background:#dcd6f7;padding:30px;color:#1e293b}h1{color:#75619f}table{border-collapse:collapse;width:100%;max-width:700px;background:#f1eefc;box-shadow:0 1px 4px #0002}th{background:#9d8ac7;color:#fff}th,td{padding:10px 14px;text-align:left;border-bottom:1px solid #e2e8f0}</style></head>
 <body><h1>Usuarios Registrados</h1><p>Visualizador de Algoritmos de Ordenamiento · Generado el ${new Date().toLocaleString('es-MX')} · Total: ${users.length}</p>
-<table><thead><tr><th>#</th><th>Usuario</th><th>Fecha de registro</th></tr></thead><tbody>${rows}</tbody></table></body></html>`;
+<table><thead><tr><th>#</th><th>Usuario</th><th>Fecha de registro</th></tr></thead><tbody>${rows}</tbody></table>
+</body></html>`;
             const blob = new Blob([html], { type: 'text/html' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
@@ -1663,6 +1774,140 @@
                 toast.classList.add('translate-y-24', 'opacity-0');
             }, 3500);
         }
+    </script>
+    <script>
+// ===== ACTUALIZACIÓN: Huffman, Libros, Grafos, Voraces, Fibonacci =====
+const $=id=>document.getElementById(id), rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const lbl=s=>typeof s==='number'?(s==32?'␣':s==10?'↵':s>32&&s<127?String.fromCharCode(s):s.toString(16)):(s==' '?'␣':s=='\n'?'↵':s);
+function huff(freq){let id=0,n=[...freq].map(([s,f])=>({s,f,id:id++})),log=[];
+ while(n.length>1){n.sort((a,b)=>a.f-b.f||a.id-b.id);const a=n.shift(),b=n.shift(),p={f:a.f+b.f,l:a,r:b,id:id++};
+  log.push((a.l?'['+a.f+']':lbl(a.s)+':'+a.f)+' + '+(b.l?'['+b.f+']':lbl(b.s)+':'+b.f)+' → ['+p.f+']');n.push(p);}
+ const root=n[0],codes=new Map();(function w(x,c){if(x.l){w(x.l,c+'0');w(x.r,c+'1')}else codes.set(x.s,c||'0')})(root,'');return{root,codes,log}}
+function treeSVG(root){let k=0,md=0,e='',nd='';
+ (function lay(x,d){x.d=d;md=Math.max(md,d);if(!x.l)x.x=k++*46+30;else{lay(x.l,d+1);lay(x.r,d+1);x.x=(x.l.x+x.r.x)/2}})(root,0);
+ (function w(x){const y=x.d*64+30;if(x.l)for(const [c,t] of [[x.l,0],[x.r,1]]){const cy=c.d*64+30;
+  e+=`<line x1="${x.x}" y1="${y}" x2="${c.x}" y2="${cy}" stroke="#9d8ac7" stroke-width="2"/><text x="${(x.x+c.x)/2+(t?8:-8)}" y="${(y+cy)/2}" font-size="9" fill="#ef4444" text-anchor="middle">${t}</text>`;w(c)}
+  nd+=`<circle cx="${x.x}" cy="${y}" r="17" fill="${x.l?'#dcd6f7':'#ebeba9'}" stroke="#483a69" stroke-width="2"/><text x="${x.x}" y="${y+4}" font-size="9" text-anchor="middle" fill="#201b30">${x.l?x.f:lbl(x.s)}</text>`+(x.l?'':`<text x="${x.x}" y="${y+32}" font-size="8" text-anchor="middle" fill="#554d73">${x.f}</text>`)})(root);
+ return `<div class="overflow-x-auto bg-slate-50 rounded-xl border border-slate-200 p-2"><svg width="${Math.max(k*46+30,200)}" height="${(md+1)*64+30}" style="font-family:'Press Start 2P',monospace">${e}${nd}</svg></div>`}
+function codeTable(freq,codes,max=40){const rows=[...freq].sort((a,b)=>b[1]-a[1]).slice(0,max).map(([s,f])=>`<tr><td>${lbl(s)}</td><td>${f}</td><td class="text-purple-700">${codes.get(s)}</td><td>${codes.get(s).length}</td></tr>`).join('');
+ return `<div class="overflow-x-auto max-h-72 overflow-y-auto"><table class="hf-t text-xs"><tr><th>Símbolo</th><th>Frec.</th><th>Código</th><th>Bits</th></tr>${rows}</table></div>`}
+function stats(freq,codes,symBits){let tot=0,cb=0;for(const [s,f] of freq){tot+=f;cb+=f*codes.get(s).length}const ob=tot*symBits;
+ return {ob,cb,txt:`<div class="grid grid-cols-3 gap-3 text-center text-xs"><div class="p-3 bg-slate-100 rounded-xl">Original<br><b>${ob.toLocaleString()} bits</b></div><div class="p-3 bg-purple-100 rounded-xl">Comprimido<br><b>${cb.toLocaleString()} bits</b></div><div class="p-3 bg-emerald-100 rounded-xl">Ahorro<br><b>${(100-cb/ob*100).toFixed(1)}%</b></div></div>`}}
+// ---- Huffman ----
+function hfShow(freq,sample){const h=huff(freq),st=stats(freq,h.codes,8);
+ const enc=[...sample.slice(0,30)].map(c=>`<span class="inline-block m-0.5 px-1 bg-amber-100 rounded">${lbl(c)}<b class="text-purple-700"> ${h.codes.get(c)}</b></span>`).join('');
+ $('hf-out').innerHTML=`<div class="${'bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4'}"><h3 class="text-base sketch-title">Árbol (0 = izquierda, 1 = derecha)</h3>${treeSVG(h.root)}
+ <h3 class="text-base sketch-title">Cómo se comprimen los bits</h3><div class="text-xs leading-loose">${enc}</div>${st.txt}
+ <h3 class="text-base sketch-title">Tabla de códigos</h3>${codeTable(freq,h.codes)}
+ <h3 class="text-base sketch-title">Pasos de unión (los 2 menores)</h3><ol class="text-xs list-decimal ml-5 space-y-1">${h.log.map(l=>`<li>${l}</li>`).join('')}</ol></div>`}
+function hfRandom(){const n=Math.min(26,Math.max(2,+$('hf-n').value||6)),L=[...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'].sort(()=>Math.random()-.5).slice(0,n),f=new Map(L.map(c=>[c,rnd(1,50)]));
+ hfShow(f,L.flatMap(c=>Array(Math.min(f.get(c),3)).fill(c)).sort(()=>Math.random()-.5))}
+function hfText(){const t=$('hf-text').value;if(t.length<2)return showToast('Atención','Escribe al menos 2 caracteres.','warning');const f=new Map();for(const c of t)f.set(c,(f.get(c)||0)+1);
+ if(f.size<2)return showToast('Atención','Usa al menos 2 símbolos distintos.','warning');hfShow(f,[...t])}
+// ---- Formato .algomistico ----
+const MAGIC='ALGOMISTICO1';
+function gbPack(bytes){const fr=new Array(256).fill(0);for(const b of bytes)fr[b]++;const f=new Map();fr.forEach((c,i)=>c&&f.set(i,c));
+ const h=huff(f),cs=[];h.codes.forEach((c,s)=>cs[s]=c);let tb=0;f.forEach((c,s)=>tb+=c*cs[s].length);
+ const data=new Uint8Array(Math.ceil(tb/8));let p=0;for(let j=0;j<bytes.length;j++){const c=cs[bytes[j]];for(let i=0;i<c.length;i++){if(c.charCodeAt(i)==49)data[p>>3]|=128>>(p&7);p++}}
+ const hd=new Uint8Array(MAGIC.length+4+2+f.size*5+1),dv=new DataView(hd.buffer);let o=0;for(const ch of MAGIC)hd[o++]=ch.charCodeAt(0);
+ dv.setUint32(o,bytes.length);o+=4;dv.setUint16(o,f.size);o+=2;f.forEach((c,s)=>{hd[o++]=s;dv.setUint32(o,c);o+=4});hd[o]=(8-tb%8)%8;
+ const out=new Uint8Array(hd.length+data.length);out.set(hd);out.set(data,hd.length);return{out,f,h,tb}}
+function gbUnpackBytes(u){const dv=new DataView(u.buffer,u.byteOffset),m=[...u.slice(0,MAGIC.length)].map(c=>String.fromCharCode(c)).join('');
+ if(m!==MAGIC)throw new Error('No es un archivo .algomistico válido');let o=MAGIC.length;const len=dv.getUint32(o);o+=4;const n=dv.getUint16(o);o+=2;const f=new Map();
+ for(let i=0;i<n;i++){f.set(u[o],dv.getUint32(o+1));o+=5}const pad=u[o++],{root}=huff(f),res=new Uint8Array(len),tb=(u.length-o)*8-pad;
+ if(!root.l){res.fill(root.s);return res}let nd=root,r=0;for(let p=0;p<tb&&r<len;p++){nd=(u[o+(p>>3)]&(128>>(p&7)))?nd.r:nd.l;if(!nd.l){res[r++]=nd.s;nd=root}}return res}
+function dl(bytes,name,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([bytes],{type}));a.download=name;a.click()}
+// ---- Gutenberg ----
+let gbLast=null;
+async function gbSearch(){const q=$('gb-q').value.trim();if(!q)return;$('gb-res').innerHTML='<p class="text-xs">Buscando…</p>';
+ try{const r=await (await fetch('https://gutendex.com/books/?search='+encodeURIComponent(q))).json();
+  $('gb-res').innerHTML=r.results.slice(0,12).map(b=>{const u=b.formats['text/plain; charset=utf-8']||b.formats['text/plain; charset=us-ascii']||b.formats['text/plain']||'';
+   return u?`<button onclick="gbGet('${u}','${b.title.replace(/[^\w ]/g,'').slice(0,40)}')" class="text-left p-3 bg-slate-50 hover:bg-purple-100 rounded-xl border border-slate-200 text-xs"><b>${b.title}</b><br>${(b.authors[0]||{}).name||''}</button>`:''}).join('')||'<p class="text-xs">Sin resultados con texto plano.</p>'}
+ catch(e){$('gb-res').innerHTML='<p class="text-xs text-rose-600">No se pudo conectar con Gutenberg. Revisa tu conexión o sube un .txt local.</p>'}}
+async function gbGet(url,name){
+ const id=(url.match(/ebooks\/(\d+)|epub\/(\d+)|files\/(\d+)/)||[]).slice(1).find(Boolean),
+  pg=id?'https://gutenberg.pglaf.org/cache/epub/'+id+'/pg'+id+'.txt':'',ww=id?'https://www.gutenberg.org/cache/epub/'+id+'/pg'+id+'.txt':'',main=pg||url;
+ name=name||('libro-'+(id||'gutenberg'));
+ let px=(($('gb-proxy')||{}).value||'').trim();
+ try{px?localStorage.setItem('gb_proxy',px):localStorage.removeItem('gb_proxy')}catch(e){}
+ if(px&&px.indexOf('?')<0)px=px.replace(/\/+$/,'')+'/?url=';
+ // Fuentes en orden: proxy propio, descarga directa y proxies públicos (gutenberg.org no permite CORS)
+ const S=[];
+ if(px)S.push(['tu proxy',px+encodeURIComponent(main)]);
+ (id?[['directo (espejo)',pg],['directo (gutenberg.org)',ww]]:[['directo',url]]).forEach(x=>S.push(x));
+ S.push(['cors.eu.org','https://cors.eu.org/'+main],['allorigins','https://api.allorigins.win/raw?url='+encodeURIComponent(main)],
+  ['codetabs','https://api.codetabs.com/v1/proxy/?quest='+encodeURIComponent(main)],['corsproxy.io','https://corsproxy.io/?url='+encodeURIComponent(main)],
+  ['cors.lol','https://api.cors.lol/?url='+encodeURIComponent(main)]);
+ const txt=(b,a,z)=>new TextDecoder('latin1').decode(b.subarray(a,z)),
+  malo=b=>b.length<500||/^\s*(<!doctype|<html|\{\s*"(error|status)")/i.test(txt(b,0,300)),
+  completo=b=>/end of (the |this )?project gutenberg/i.test(txt(b,Math.max(0,b.length-80000)));
+ const bajar=async u=>{const ac=new AbortController(),t=setTimeout(()=>ac.abort(),30000);
+  try{const r=await fetch(u,{signal:ac.signal});return r.ok?new Uint8Array(await r.arrayBuffer()):null}catch(e){return null}finally{clearTimeout(t)}};
+ let parcial=null;
+ for(let i=0;i<S.length;i++){
+  $('gb-out').innerHTML='<p class="text-xs">Descargando libro… (fuente '+(i+1)+' de '+S.length+': '+S[i][0]+')</p>';
+  const b=await bajar(S[i][1]);
+  if(!b||malo(b))continue;
+  if(completo(b))return gbCompress(b,name);
+  if(!parcial||b.length>parcial.length)parcial=b;
+ }
+ if(parcial){gbCompress(parcial,name);showToast('Atención','No se pudo verificar que el libro esté completo.','warning');
+  setTimeout(()=>$('gb-out').insertAdjacentHTML('afterbegin','<p class="text-xs font-bold text-amber-700">⚠ La descarga puede estar incompleta: no se encontró el final estándar del libro. Revisa el resultado o súbelo manualmente con «.txt local».</p>'),80);return}
+ $('gb-out').innerHTML='<div class="bg-white p-6 rounded-2xl border border-rose-200 space-y-2"><p class="text-xs text-rose-600">No se pudo descargar el libro automáticamente: gutenberg.org no permite descargas directas desde el navegador (CORS) y los proxies públicos fallaron o están saturados.</p><p class="text-xs">Opción rápida: abre <a href="'+escapeHtml(ww||url)+'" target="_blank" rel="noopener" class="font-bold text-purple-700 underline">el .txt del libro</a>, guárdalo (Ctrl+S) y súbelo en «.txt local». Opción estable: pon tu propio proxy en el campo de arriba (ver gutenberg-proxy-worker.js).</p></div>'}
+window.addEventListener('load',()=>{try{const p=localStorage.getItem('gb_proxy');if(p&&$('gb-proxy'))$('gb-proxy').value=p}catch(e){}});
+function gbLocal(){const f=$('gb-txt').files[0];if(f)f.arrayBuffer().then(b=>gbCompress(new Uint8Array(b),f.name.replace(/\.txt$/,'')))}
+function gbCompress(bytes,name){$('gb-out').innerHTML='<p class="text-xs">Comprimiendo…</p>';setTimeout(()=>{const t0=performance.now(),r=gbPack(bytes),ms=(performance.now()-t0).toFixed(0);gbLast={r,name};
+ const st=stats(r.f,r.h.codes,8);
+ $('gb-out').innerHTML=`<div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4"><h3 class="text-base sketch-title">${name}</h3>
+ <p class="text-xs">${bytes.length.toLocaleString()} bytes → ${r.out.length.toLocaleString()} bytes (.algomistico) en ${ms} ms · ${r.f.size} símbolos distintos</p>${st.txt}
+ <button onclick="dl(gbLast.r.out,gbLast.name+'.algomistico','application/octet-stream')" class="${'px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-xs'}"><i class="fa-solid fa-download mr-2"></i>Descargar .algomistico</button>
+ ${$('gb-viz').checked?`<h3 class="text-base sketch-title">Árbol de compresión</h3>${treeSVG(r.h.root)}`:'<p class="text-xs text-slate-500">Árbol oculto (activa «Visualizar árbol»).</p>'}
+ <h3 class="text-base sketch-title">Códigos más frecuentes</h3>${codeTable(r.f,r.h.codes,25)}</div>`},30)}
+function gbUnpack(){const f=$('gb-file').files[0];if(!f)return showToast('Atención','Elige un archivo .algomistico','warning');
+ f.arrayBuffer().then(b=>{try{dl(gbUnpackBytes(new Uint8Array(b)),f.name.replace(/\.algomistico$/,'')+'.txt','text/plain');showToast('Listo','Archivo descomprimido.')}catch(e){showToast('Error',e.message,'warning')}})}
+// ---- Grafos ----
+let G=null;
+function gNew(){const n=Math.min(10,Math.max(4,+$('g-n').value||7)),nodes=[...Array(n)].map((_,i)=>({x:320+250*Math.cos(2*Math.PI*i/n-1.57),y:190+150*Math.sin(2*Math.PI*i/n-1.57)})),E=[],has=(a,b)=>E.some(e=>(e[0]==a&&e[1]==b)||(e[0]==b&&e[1]==a));
+ for(let i=1;i<n;i++){const j=rnd(0,i-1);E.push([j,i,rnd(1,9)])}for(let k=0;k<n;k++){const a=rnd(0,n-1),b=rnd(0,n-1);if(a!=b&&!has(a,b))E.push([a,b,rnd(1,9)])}
+ G={nodes,E};$('g-s').max=n-1;gDraw({});gMat()}
+function gMat(){const n=G.nodes.length,M=[...Array(n)].map(()=>Array(n).fill(0));G.E.forEach(([a,b,w])=>M[a][b]=M[b][a]=w);
+ $('g-mat').innerHTML='<b>Matriz de adyacencia</b><table class="hf-t"><tr><th></th>'+M.map((_,i)=>`<th>${i}</th>`).join('')+'</tr>'+M.map((r,i)=>`<tr><th>${i}</th>${r.map(v=>`<td>${v||'·'}</td>`).join('')}</tr>`).join('')+'</table>'}
+function gDraw(s){const vis=s.vis||[],es=s.es||[],rj=s.rj||[];
+ $('g-svg').innerHTML=G.E.map(([a,b,w],i)=>{const A=G.nodes[a],B=G.nodes[b];return `<line x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" stroke="${es.includes(i)?'#10b981':rj.includes(i)?'#ef4444':'#b9acdf'}" stroke-width="${es.includes(i)?5:2}"/><text x="${(A.x+B.x)/2}" y="${(A.y+B.y)/2-4}" font-size="9" fill="#483a69" style="font-family:'Press Start 2P'">${w}</text>`}).join('')+
+ G.nodes.map((p,i)=>`<circle cx="${p.x}" cy="${p.y}" r="20" fill="${i===s.cur?'#ef4444':vis.includes(i)?'#10b981':'#dcd6f7'}" stroke="#483a69" stroke-width="2"/><text x="${p.x}" y="${p.y+4}" font-size="10" text-anchor="middle" fill="#201b30" style="font-family:'Press Start 2P'">${i}</text>`+(s.d&&s.d[i]!==undefined?`<text x="${p.x}" y="${p.y-26}" font-size="9" text-anchor="middle" fill="#ec4899" style="font-family:'Press Start 2P'">${s.d[i]===Infinity?'∞':s.d[i]}</text>`:'')).join('');
+ $('g-msg').textContent=s.msg||''}
+function gRun(){if(!G)gNew();const n=G.nodes.length,s0=Math.min(n-1,+$('g-s').value||0),alg=$('g-alg').value,adj=[...Array(n)].map(()=>[]);
+ G.E.forEach(([a,b,w],i)=>{adj[a].push([b,w,i]);adj[b].push([a,w,i])});const st=[];let vis=[],es=[];
+ if(alg=='bfs'||alg=='dfs'){const seen=new Set([s0]),L=[s0];while(L.length){const u=alg=='bfs'?L.shift():L.pop();vis=[...vis,u];st.push({vis,es:[...es],cur:u,msg:(alg=='bfs'?'BFS (cola)':'DFS (pila)')+' visita '+u});
+  for(const [v,,i] of (alg=='dfs'?[...adj[u]].reverse():adj[u]))if(!seen.has(v)){seen.add(v);L.push(v);es=[...es,i]}}}
+ else if(alg=='dij'){const d=Array(n).fill(Infinity),pe=Array(n).fill(-1);d[s0]=0;const done=[];while(done.length<n){let u=-1;for(let i=0;i<n;i++)if(!done.includes(i)&&(u<0||d[i]<d[u]))u=i;if(d[u]===Infinity)break;done.push(u);
+  for(const [v,w,i] of adj[u])if(d[u]+w<d[v]){d[v]=d[u]+w;pe[v]=i}st.push({vis:[...done],cur:u,d:[...d],es:pe.filter(x=>x>=0),msg:`Dijkstra: se fija el nodo ${u} con distancia ${d[u]}`})}}
+ else{const par=[...Array(n).keys()],fd=x=>par[x]==x?x:(par[x]=fd(par[x])),ord=G.E.map((e,i)=>i).sort((a,b)=>G.E[a][2]-G.E[b][2]),rj=[];let tot=0;
+  for(const i of ord){const [a,b,w]=G.E[i],ra=fd(a),rb=fd(b);if(ra!=rb){par[ra]=rb;es=[...es,i];tot+=w}else rj.push(i);
+   st.push({vis:[...new Set(es.flatMap(j=>[G.E[j][0],G.E[j][1]]))],es:[...es],rj:[...rj],msg:`Kruskal: arista ${a}-${b} (peso ${w}) ${ra!=rb?'ACEPTADA':'descartada (ciclo)'} · costo ${tot}`})}}
+ let k=0;clearInterval(window.gT);window.gT=setInterval(()=>{if(k>=st.length)return clearInterval(window.gT);gDraw(st[k++])},700)}
+// ---- Voraces ----
+function vCoin(){let a=+$('v-amt').value;const D=$('v-den').value.split(',').map(Number).filter(x=>x>0).sort((x,y)=>y-x);let r=a,g=[];for(const d of D){const c=Math.floor(r/d);if(c){g.push(`${c} × ${d}`);r-=c*d}}
+ const dp=Array(a+1).fill(1e9);dp[0]=0;for(let i=1;i<=a;i++)for(const d of D)if(d<=i)dp[i]=Math.min(dp[i],dp[i-d]+1);const gc=g.reduce((s,x)=>s+ +x.split(' ')[0],0);
+ $('v-coin').innerHTML=`<p>Voraz: <b>${g.join(' + ')}</b> (${gc} monedas)${r?' · sobran '+r:''}</p><p>Óptimo (prog. dinámica): <b>${dp[a]>=1e9?'imposible':dp[a]+' monedas'}</b> ${dp[a]<gc?'<span class="text-rose-600">→ el voraz NO es óptimo con estas denominaciones (prueba 1,3,4 con 6)</span>':'<span class="text-emerald-600">→ coincide</span>'}</p>`}
+function vKnap(){const it=[...Array(5)].map((_,i)=>({n:'Obj'+(i+1),w:rnd(2,15),v:rnd(10,60)})).sort((a,b)=>b.v/b.w-a.v/a.w);let cap=rnd(15,35),c=cap,tot=0,rows='';
+ for(const x of it){const t=Math.min(x.w,c),fr=t/x.w;c-=t;tot+=x.v*fr;rows+=`<tr><td>${x.n}</td><td>${x.w}</td><td>${x.v}</td><td>${(x.v/x.w).toFixed(2)}</td><td>${(fr*100).toFixed(0)}%</td></tr>`}
+ $('v-knap').innerHTML=`<p>Capacidad: <b>${cap}</b>. Se ordena por valor/peso y se toma lo más rentable primero.</p><table class="hf-t"><tr><th>Objeto</th><th>Peso</th><th>Valor</th><th>V/P</th><th>Tomado</th></tr>${rows}</table><p>Valor total: <b>${tot.toFixed(2)}</b></p>`}
+function vAct(){const A=[...Array(8)].map((_,i)=>{const s=rnd(0,20);return{n:'A'+(i+1),s,e:s+rnd(2,8)}}),sel=new Set;let end=-1;[...A].sort((a,b)=>a.e-b.e).forEach(a=>{if(a.s>=end){sel.add(a.n);end=a.e}});
+ $('v-act').innerHTML='<p>Se ordena por hora de fin y se elige la que no se traslape.</p>'+A.map(a=>`<div class="flex items-center gap-2"><span class="w-8">${a.n}</span><div class="relative flex-1 h-5 bg-slate-100 rounded"><div class="absolute h-5 rounded ${sel.has(a.n)?'bg-emerald-500':'bg-purple-300'}" style="left:${a.s*3.4}%;width:${(a.e-a.s)*3.4}%"></div></div><span class="w-16">${a.s}-${a.e}</span></div>`).join('')+`<p>Seleccionadas (verde): <b>${sel.size}</b></p>`}
+// ---- Fibonacci ----
+function fRun(){const n=Math.min(5000,Math.max(0,+$('f-n').value||0)),R=[];
+ const T=(name,fn,big)=>{const t=performance.now();let r,c='-';try{[r,c]=fn()}catch(e){r='—';c='omitido'}R.push([name,big&&typeof r!='string'?r.toString().length>30?r.toString().slice(0,12)+'…('+r.toString().length+' dígitos)':r:r,c,(performance.now()-t).toFixed(3)+' ms'])};
+ T('Recursivo O(φⁿ)',()=>{if(n>35)throw 0;let c=0;const f=k=>{c++;return k<2?BigInt(k):f(k-1)+f(k-2)};return[f(n),c]},1);
+ T('Memoización O(n)',()=>{const m=new Map();let c=0;const f=k=>{c++;if(k<2)return BigInt(k);if(m.has(k))return m.get(k);const v=f(k-1)+f(k-2);m.set(k,v);return v};return[f(n),c]},1);
+ T('Iterativo O(n)',()=>{let a=0n,b=1n;for(let i=0;i<n;i++)[a,b]=[b,a+b];return[a,n]},1);
+ T('Duplicación rápida O(log n)',()=>{let c=0;const f=k=>{c++;if(k==0)return[0n,1n];const [a,b]=f(k>>1),x=a*(2n*b-a),y=a*a+b*b;return k&1?[y,x+y]:[x,y]};return[f(n)[0],c]},1);
+ T('Binet O(1)',()=>{if(n>70)throw 0;const p=(1+Math.sqrt(5))/2;return[Math.round(Math.pow(p,n)/Math.sqrt(5)),1]});
+ let a=0n,b=1n,seq=[];for(let i=0;i<Math.min(n+1,20);i++){seq.push(a);[a,b]=[b,a+b]}
+ const ratios=seq.slice(2,10).map((x,i)=>(Number(x)/Number(seq[i+1])).toFixed(5));
+ $('f-out').innerHTML=`<table class="hf-t w-full"><tr><th>Método</th><th>F(${n})</th><th>Llamadas / pasos</th><th>Tiempo</th></tr>${R.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}</table>
+ <p class="mt-3"><b>Primeros términos:</b> ${seq.join(', ')}</p><p class="mt-2"><b>Razón F(n)/F(n-1) → φ ≈ 1.61803:</b> ${ratios.join(', ')}</p><p class="mt-2 text-slate-500">Recursivo se omite con n &gt; 35 y Binet con n &gt; 70 (precisión de decimales).</p>`}
+window.addEventListener('load',()=>{gNew();hfRandom();vCoin();vKnap();vAct();fRun()});
     </script>
 </body>
 </html>
