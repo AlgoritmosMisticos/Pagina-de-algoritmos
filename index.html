@@ -1806,7 +1806,7 @@ function hfText(){const t=$('hf-text').value;if(t.length<2)return showToast('Ate
  if(f.size<2)return showToast('Atención','Usa al menos 2 símbolos distintos.','warning');hfShow(f,[...t])}
 // ---- Formato .algomistico ----
 const MAGIC='ALGOMISTICO1';
-function gbPack(bytes){const fr=new Array(256).fill(0);for(const b of bytes)fr[b]++;const f=new Map();fr.forEach((c,i)=>c&&f.set(i,c));
+function gbPack(bytes){if(!bytes.length)throw new Error('El archivo está vacío');const fr=new Array(256).fill(0);for(const b of bytes)fr[b]++;const f=new Map();fr.forEach((c,i)=>c&&f.set(i,c));
  const h=huff(f),cs=[];h.codes.forEach((c,s)=>cs[s]=c);let tb=0;f.forEach((c,s)=>tb+=c*cs[s].length);
  const data=new Uint8Array(Math.ceil(tb/8));let p=0;for(let j=0;j<bytes.length;j++){const c=cs[bytes[j]];for(let i=0;i<c.length;i++){if(c.charCodeAt(i)==49)data[p>>3]|=128>>(p&7);p++}}
  const hd=new Uint8Array(MAGIC.length+4+2+f.size*5+1),dv=new DataView(hd.buffer);let o=0;for(const ch of MAGIC)hd[o++]=ch.charCodeAt(0);
@@ -1818,17 +1818,19 @@ function gbUnpackBytes(u){const dv=new DataView(u.buffer,u.byteOffset),m=[...u.s
  if(!root.l){res.fill(root.s);return res}let nd=root,r=0;for(let p=0;p<tb&&r<len;p++){nd=(u[o+(p>>3)]&(128>>(p&7)))?nd.r:nd.l;if(!nd.l){res[r++]=nd.s;nd=root}}return res}
 function dl(bytes,name,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([bytes],{type}));a.download=name;a.click()}
 // ---- Gutenberg ----
+// URL de TU Worker de Cloudflare (ej. 'https://miproxy.usuario.workers.dev/?url='). Con esto nadie tiene que escribirla.
+const GB_PROXY='';
 let gbLast=null;
 async function gbSearch(){const q=$('gb-q').value.trim();if(!q)return;$('gb-res').innerHTML='<p class="text-xs">Buscando…</p>';
  try{const r=await (await fetch('https://gutendex.com/books/?search='+encodeURIComponent(q))).json();
   $('gb-res').innerHTML=r.results.slice(0,12).map(b=>{const u=b.formats['text/plain; charset=utf-8']||b.formats['text/plain; charset=us-ascii']||b.formats['text/plain']||'';
-   return u?`<button onclick="gbGet('${u}','${b.title.replace(/[^\w ]/g,'').slice(0,40)}')" class="text-left p-3 bg-slate-50 hover:bg-purple-100 rounded-xl border border-slate-200 text-xs"><b>${b.title}</b><br>${(b.authors[0]||{}).name||''}</button>`:''}).join('')||'<p class="text-xs">Sin resultados con texto plano.</p>'}
+   return u?`<button onclick="gbGet('${u}','${b.title.replace(/['"\\<>&`]/g,'').slice(0,40)}')" class="text-left p-3 bg-slate-50 hover:bg-purple-100 rounded-xl border border-slate-200 text-xs"><b>${b.title}</b><br>${(b.authors[0]||{}).name||''}</button>`:''}).join('')||'<p class="text-xs">Sin resultados con texto plano.</p>'}
  catch(e){$('gb-res').innerHTML='<p class="text-xs text-rose-600">No se pudo conectar con Gutenberg. Revisa tu conexión o sube un .txt local.</p>'}}
 async function gbGet(url,name){
  const id=(url.match(/ebooks\/(\d+)|epub\/(\d+)|files\/(\d+)/)||[]).slice(1).find(Boolean),
   pg=id?'https://gutenberg.pglaf.org/cache/epub/'+id+'/pg'+id+'.txt':'',ww=id?'https://www.gutenberg.org/cache/epub/'+id+'/pg'+id+'.txt':'',main=pg||url;
  name=name||('libro-'+(id||'gutenberg'));
- let px=(($('gb-proxy')||{}).value||'').trim();
+ let px=(($('gb-proxy')||{}).value||'').trim()||GB_PROXY;
  try{px?localStorage.setItem('gb_proxy',px):localStorage.removeItem('gb_proxy')}catch(e){}
  if(px&&px.indexOf('?')<0)px=px.replace(/\/+$/,'')+'/?url=';
  // Fuentes en orden: proxy propio, descarga directa y proxies públicos (gutenberg.org no permite CORS)
@@ -1841,7 +1843,7 @@ async function gbGet(url,name){
  const txt=(b,a,z)=>new TextDecoder('latin1').decode(b.subarray(a,z)),
   malo=b=>b.length<500||/^\s*(<!doctype|<html|\{\s*"(error|status)")/i.test(txt(b,0,300)),
   completo=b=>/end of (the |this )?project gutenberg/i.test(txt(b,Math.max(0,b.length-80000)));
- const bajar=async u=>{const ac=new AbortController(),t=setTimeout(()=>ac.abort(),30000);
+ const bajar=async u=>{const ac=new AbortController(),t=setTimeout(()=>ac.abort(),15000);
   try{const r=await fetch(u,{signal:ac.signal});return r.ok?new Uint8Array(await r.arrayBuffer()):null}catch(e){return null}finally{clearTimeout(t)}};
  let parcial=null;
  for(let i=0;i<S.length;i++){
