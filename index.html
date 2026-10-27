@@ -1830,8 +1830,9 @@ async function gbGet(url,name){
  const id=(url.match(/ebooks\/(\d+)|epub\/(\d+)|files\/(\d+)/)||[]).slice(1).find(Boolean),
   pg=id?'https://gutenberg.pglaf.org/cache/epub/'+id+'/pg'+id+'.txt':'',ww=id?'https://www.gutenberg.org/cache/epub/'+id+'/pg'+id+'.txt':'',main=pg||url;
  name=name||('libro-'+(id||'gutenberg'));
- let px=(($('gb-proxy')||{}).value||'').trim()||GB_PROXY;
- try{px?localStorage.setItem('gb_proxy',px):localStorage.removeItem('gb_proxy')}catch(e){}
+ let px=(GB_PROXY||(($('gb-proxy')||{}).value||'')).trim();
+ try{localStorage.removeItem('gb_proxy')}catch(e){}
+ if(px&&!/^https?:\/\//i.test(px))px='https://'+px;
  if(px&&px.indexOf('?')<0)px=px.replace(/\/+$/,'')+'/?url=';
  // Fuentes en orden: proxy propio, descarga directa y proxies públicos (gutenberg.org no permite CORS)
  const S=[];
@@ -1856,7 +1857,7 @@ async function gbGet(url,name){
  if(parcial){gbCompress(parcial,name);showToast('Atención','No se pudo verificar que el libro esté completo.','warning');
   setTimeout(()=>$('gb-out').insertAdjacentHTML('afterbegin','<p class="text-xs font-bold text-amber-700">⚠ La descarga puede estar incompleta: no se encontró el final estándar del libro. Revisa el resultado o súbelo manualmente con «.txt local».</p>'),80);return}
  $('gb-out').innerHTML='<div class="bg-white p-6 rounded-2xl border border-rose-200 space-y-2"><p class="text-xs text-rose-600">No se pudo descargar el libro automáticamente: gutenberg.org no permite descargas directas desde el navegador (CORS) y los proxies públicos fallaron o están saturados.</p><p class="text-xs">Opción rápida: abre <a href="'+escapeHtml(ww||url)+'" target="_blank" rel="noopener" class="font-bold text-purple-700 underline">el .txt del libro</a>, guárdalo (Ctrl+S) y súbelo en «.txt local». Opción estable: pon tu propio proxy en el campo de arriba (ver gutenberg-proxy-worker.js).</p></div>'}
-window.addEventListener('load',()=>{try{const p=localStorage.getItem('gb_proxy');if(p&&$('gb-proxy'))$('gb-proxy').value=p}catch(e){}});
+window.addEventListener('load',()=>{try{localStorage.removeItem('gb_proxy')}catch(e){}});
 function gbLocal(){const f=$('gb-txt').files[0];if(f)f.arrayBuffer().then(b=>gbCompress(new Uint8Array(b),f.name.replace(/\.txt$/,'')))}
 function gbCompress(bytes,name){$('gb-out').innerHTML='<p class="text-xs">Comprimiendo…</p>';setTimeout(()=>{const t0=performance.now(),r=gbPack(bytes),ms=(performance.now()-t0).toFixed(0);gbLast={r,name};
  const st=stats(r.f,r.h.codes,8);
