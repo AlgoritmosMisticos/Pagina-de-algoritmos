@@ -1819,7 +1819,7 @@ function gbUnpackBytes(u){const dv=new DataView(u.buffer,u.byteOffset),m=[...u.s
 function dl(bytes,name,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([bytes],{type}));a.download=name;a.click()}
 // ---- Gutenberg ----
 // URL de TU Worker de Cloudflare (ej. 'https://miproxy.usuario.workers.dev/?url='). Con esto nadie tiene que escribirla.
-const GB_PROXY='lingering-mouse-37a4.octavio-lopez3376.workers.dev';
+const GB_PROXY='https://lingering-mouse-37a4.octavio-lopez3376.workers.dev/?url=';
 let gbLast=null;
 async function gbSearch(){const q=$('gb-q').value.trim();if(!q)return;$('gb-res').innerHTML='<p class="text-xs">Buscando…</p>';
  try{const r=await (await fetch('https://gutendex.com/books/?search='+encodeURIComponent(q))).json();
