@@ -693,9 +693,11 @@
  <div id="gb-res" class="grid grid-cols-1 md:grid-cols-2 gap-2"></div>
 </div>
 <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+ <h3 class="text-base sketch-title">Comprimir .txt local</h3>
+ <p class="text-xs text-slate-500">Sube un .txt de tu equipo para comprimirlo: <input id="gb-txt" type="file" accept=".txt" onchange="gbLocal()" class="text-xs"></p>
+ <hr class="border-slate-200">
  <h3 class="text-base sketch-title">Descomprimir .algomistico</h3>
  <div class="flex flex-wrap gap-3 items-center"><input id="gb-file" type="file" accept=".algomistico" class="text-xs"><button onclick="gbUnpack()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-xs">Descomprimir</button></div>
- <p class="text-xs text-slate-500">También puedes subir un .txt local: <input id="gb-txt" type="file" accept=".txt" onchange="gbLocal()" class="text-xs"></p>
 </div>
 <div id="gb-out" class="space-y-4"></div>
                 </div>
@@ -1821,11 +1823,19 @@ function dl(bytes,name,type){const a=document.createElement('a');a.href=URL.crea
 // URL de TU Worker de Cloudflare (ej. 'https://miproxy.usuario.workers.dev/?url='). Con esto nadie tiene que escribirla.
 const GB_PROXY='https://lingering-mouse-37a4.octavio-lopez3376.workers.dev/?url=';
 let gbLast=null;
-async function gbSearch(){const q=$('gb-q').value.trim();if(!q)return;$('gb-res').innerHTML='<p class="text-xs">Buscando…</p>';
- try{const r=await (await fetch('https://gutendex.com/books/?search='+encodeURIComponent(q))).json();
-  $('gb-res').innerHTML=r.results.slice(0,12).map(b=>{const u=b.formats['text/plain; charset=utf-8']||b.formats['text/plain; charset=us-ascii']||b.formats['text/plain']||'';
-   return u?`<button onclick="gbGet('${u}','${b.title.replace(/['"\\<>&`]/g,'').slice(0,40)}')" class="text-left p-3 bg-slate-50 hover:bg-purple-100 rounded-xl border border-slate-200 text-xs"><b>${b.title}</b><br>${(b.authors[0]||{}).name||''}</button>`:''}).join('')||'<p class="text-xs">Sin resultados con texto plano.</p>'}
- catch(e){$('gb-res').innerHTML='<p class="text-xs text-rose-600">No se pudo conectar con Gutenberg. Revisa tu conexión o sube un .txt local.</p>'}}
+async function gbSearch(){const q=$('gb-q').value.trim();if(!q)return;
+ const api='https://gutendex.com/books/?search='+encodeURIComponent(q),
+  urls=[api];if(GB_PROXY)urls.push(GB_PROXY+encodeURIComponent(api));urls.push(api);
+ let r=null,err='';
+ for(let i=0;i<urls.length&&!r;i++){
+  $('gb-res').innerHTML='<p class="text-xs">Buscando… (intento '+(i+1)+' de '+urls.length+')</p>';
+  const ac=new AbortController(),t=setTimeout(()=>ac.abort(),15000);
+  try{const x=await fetch(urls[i],{signal:ac.signal});if(!x.ok)throw new Error('HTTP '+x.status);
+   const j=await x.json();if(!j||!Array.isArray(j.results))throw new Error('respuesta inesperada');r=j}
+  catch(e){err=e.name==='AbortError'?'tiempo agotado (15 s)':e.message}finally{clearTimeout(t)}}
+ if(!r){$('gb-res').innerHTML='<p class="text-xs text-rose-600">No se pudo buscar en Gutenberg ('+escapeHtml(err)+'). Gutendex es un servicio gratuito que a veces tarda o falla: intenta de nuevo en unos segundos o con otro título.</p>';return}
+ $('gb-res').innerHTML=r.results.slice(0,12).map(b=>{const u=b.formats['text/plain; charset=utf-8']||b.formats['text/plain; charset=us-ascii']||b.formats['text/plain']||'';
+  return u?`<button onclick="gbGet('${u}','${b.title.replace(/['"\\<>&`]/g,'').slice(0,40)}')" class="text-left p-3 bg-slate-50 hover:bg-purple-100 rounded-xl border border-slate-200 text-xs"><b>${escapeHtml(b.title)}</b><br>${escapeHtml((b.authors[0]||{}).name||'')}</button>`:''}).join('')||'<p class="text-xs">Sin resultados con texto plano.</p>'}
 async function gbGet(url,name){
  const id=(url.match(/ebooks\/(\d+)|epub\/(\d+)|files\/(\d+)/)||[]).slice(1).find(Boolean),
   pg=id?'https://gutenberg.pglaf.org/cache/epub/'+id+'/pg'+id+'.txt':'',ww=id?'https://www.gutenberg.org/cache/epub/'+id+'/pg'+id+'.txt':'',main=pg||url;
